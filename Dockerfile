@@ -1,5 +1,5 @@
 #Latest version of node tested on.
-FROM node:8-alpine AS dist
+FROM node:8-slim AS dist
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ ADD . /app
 RUN npm run dist
 
 
-FROM node:8-alpine
+FROM node:8-slim
 
 WORKDIR /app
 ADD ./cfg/* /app/cfg/
@@ -33,6 +33,8 @@ RUN npm install
 ENV MS=1000 CTX_ROOT=/
 
 EXPOSE 8080
+
+RUN apt update && apt upgrade -y # installing updates
 
 HEALTHCHECK CMD node /app/healthcheck.js || exit 1
 
